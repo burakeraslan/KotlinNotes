@@ -15,13 +15,12 @@
             app:destination="@id/noteAddFragment" />
     </fragment>
     <fragment
-        android:id="@+id/noteDetailFragment"
-        android:name="com.example.kotlinnotes.NoteDetailFragment"
-        android:label="fragment_note_detail"
-        tools:layout="@layout/fragment_note_detail" />
-    <fragment
         android:id="@+id/noteAddFragment"
         android:name="com.example.kotlinnotes.NoteAddFragment"
         android:label="fragment_note_add"
-        tools:layout="@layout/fragment_note_add" />
+        tools:layout="@layout/fragment_note_add" >
+        <action
+            android:id="@+id/action_noteAddFragment_to_noteListFragment"
+            app:destination="@id/noteListFragment" />
+    </fragment>
 </navigation>
