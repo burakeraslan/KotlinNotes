@@ -11,16 +11,17 @@
         android:label="fragment_note_list"
         tools:layout="@layout/fragment_note_list" >
         <action
-            android:id="@+id/action_noteListFragment_to_noteDetailFragment"
-            app:destination="@id/noteDetailFragment" />
+            android:id="@+id/action_noteListFragment_to_noteAddFragment"
+            app:destination="@id/noteAddFragment" />
     </fragment>
     <fragment
         android:id="@+id/noteDetailFragment"
         android:name="com.example.kotlinnotes.NoteDetailFragment"
         android:label="fragment_note_detail"
-        tools:layout="@layout/fragment_note_detail" >
-        <action
-            android:id="@+id/action_noteDetailFragment_to_noteListFragment"
-            app:destination="@id/noteListFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_note_detail" />
+    <fragment
+        android:id="@+id/noteAddFragment"
+        android:name="com.example.kotlinnotes.NoteAddFragment"
+        android:label="fragment_note_add"
+        tools:layout="@layout/fragment_note_add" />
 </navigation>

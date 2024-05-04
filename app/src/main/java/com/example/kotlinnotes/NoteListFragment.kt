@@ -24,7 +24,7 @@ class NoteListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<View>(R.id.addButton).setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_noteListFragment_to_noteDetailFragment)
+            Navigation.findNavController(view).navigate(R.id.action_noteListFragment_to_noteAddFragment)
         }
     }
 }
