@@ -6,8 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.RecyclerView
 
 class NoteListFragment : Fragment() {
+    var noteList = ArrayList<HashMap<String, String>>()
+    var noteItemMap = HashMap<String, String>()
+    private lateinit var noteListRecyclerAdapter: NoteListRecyclerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -23,8 +28,41 @@ class NoteListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<View>(R.id.addButton).setOnClickListener {
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        noteListRecyclerAdapter = NoteListRecyclerAdapter(noteList)
+        recyclerView?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+        recyclerView?.adapter = noteListRecyclerAdapter
+
+        val addButton = view.findViewById<View>(R.id.addButton)
+        addButton?.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_noteListFragment_to_noteAddFragment)
         }
+
+        getData()
     }
+
+    fun getData() {
+        try {
+            val db = requireActivity().applicationContext.openOrCreateDatabase("notes", android.content.Context.MODE_PRIVATE, null)
+            db.execSQL("CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY, header TEXT, description TEXT)")
+            val cursor = db.rawQuery("SELECT * FROM notes", null)
+            val idIndex = cursor.getColumnIndex("id")
+            val headerIndex = cursor.getColumnIndex("header")
+            val descriptionIndex = cursor.getColumnIndex("description")
+            noteList.clear()
+            while (cursor.moveToNext()) {
+                noteItemMap = HashMap()
+                noteItemMap["id"] = cursor.getString(idIndex)
+                noteItemMap["header"] = cursor.getString(headerIndex)
+                noteItemMap["description"] = cursor.getString(descriptionIndex)
+                noteList.add(noteItemMap)
+            }
+            noteListRecyclerAdapter.notifyDataSetChanged()
+            cursor.close()
+        } catch (e: Exception) {
+            println("Error: $e")
+        }
+
+    }
+
 }
