@@ -19,6 +19,15 @@
         android:name="com.example.kotlinnotes.NoteAddFragment"
         android:label="fragment_note_add"
         tools:layout="@layout/fragment_note_add" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="header"
+            app:argType="string" />
+        <argument
+            android:name="description"
+            app:argType="string" />
         <action
             android:id="@+id/action_noteAddFragment_to_noteListFragment"
             app:destination="@id/noteListFragment" />

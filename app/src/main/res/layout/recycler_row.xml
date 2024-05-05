@@ -1,31 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayoutRecyclerRow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/recycler_row_background"
     android:orientation="vertical"
-    >
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/textViewNoteHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        android:padding="10dp"
-        android:textColor="#000000"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="2dp"
         android:background="@android:color/transparent"
-        />
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Title"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textViewNoteDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Description"
-        android:textSize="24sp"
-        android:padding="10dp"
-        android:textColor="#000000"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="2dp"
         android:background="@android:color/transparent"
-        />
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Description"
+        android:textColor="#000000"
+        android:textSize="18sp" />
 
 </LinearLayout>

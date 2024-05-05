@@ -35,10 +35,11 @@ class NoteListFragment : Fragment() {
 
         val addButton = view.findViewById<View>(R.id.addButton)
         addButton?.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_noteListFragment_to_noteAddFragment)
+            val action = NoteListFragmentDirections.actionNoteListFragmentToNoteAddFragment("", "", "")
+            Navigation.findNavController(it).navigate(action)
         }
-
         getData()
+
     }
 
     fun getData() {
