@@ -9,13 +9,9 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 
 class NoteListFragment : Fragment() {
-    var noteList = ArrayList<HashMap<String, String>>()
-    var noteItemMap = HashMap<String, String>()
+    private var noteList = ArrayList<HashMap<String, String>>()
+    private var noteItemMap = HashMap<String, String>()
     private lateinit var noteListRecyclerAdapter: NoteListRecyclerAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +38,7 @@ class NoteListFragment : Fragment() {
 
     }
 
-    fun getData() {
+    private fun getData() {
         try {
             val db = requireActivity().applicationContext.openOrCreateDatabase("notes", android.content.Context.MODE_PRIVATE, null)
             db.execSQL("CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY, header TEXT, description TEXT)")
@@ -63,7 +59,5 @@ class NoteListFragment : Fragment() {
         } catch (e: Exception) {
             println("Error: $e")
         }
-
     }
-
 }

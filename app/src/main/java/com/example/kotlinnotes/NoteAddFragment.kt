@@ -11,17 +11,13 @@ import android.widget.EditText
 import androidx.navigation.Navigation
 
 class NoteAddFragment : Fragment() {
-    lateinit var editTextNoteHeader: EditText
-    lateinit var editTextNoteDescription: EditText
-    lateinit var doneButton: View
-    lateinit var noteId: String
-    lateinit var noteHeader: String
-    lateinit var noteDescription: String
-    var isEdit: Boolean = false
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var editTextNoteHeader: EditText
+    private lateinit var editTextNoteDescription: EditText
+    private lateinit var doneButton: View
+    private lateinit var noteId: String
+    private lateinit var noteHeader: String
+    private lateinit var noteDescription: String
+    private var isEdit: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,18 +29,18 @@ class NoteAddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        editTextNoteHeader = view.findViewById<EditText>(R.id.editTextNoteHeader)
-        editTextNoteDescription = view.findViewById<EditText>(R.id.editTextNoteDescription)
-        doneButton = view.findViewById<View>(R.id.doneButton)
+        editTextNoteHeader = view.findViewById(R.id.editTextNoteHeader)
+        editTextNoteDescription = view.findViewById(R.id.editTextNoteDescription)
+        doneButton = view.findViewById(R.id.doneButton)
 
-        editTextNoteHeader?.requestFocus()
+        editTextNoteHeader.requestFocus()
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(editTextNoteHeader, InputMethodManager.SHOW_IMPLICIT)
 
-        doneButton?.setOnClickListener {
+        doneButton.setOnClickListener {
             imm.hideSoftInputFromWindow(view.windowToken, 0)
-            editTextNoteHeader?.clearFocus()
-            editTextNoteDescription?.clearFocus()
+            editTextNoteHeader.clearFocus()
+            editTextNoteDescription.clearFocus()
         }
 
         val backButton = view.findViewById<View>(R.id.backButton)
@@ -56,11 +52,7 @@ class NoteAddFragment : Fragment() {
 
         arguments?.let {
             val safeArgs = NoteAddFragmentArgs.fromBundle(it)
-            if (safeArgs.id == "" && safeArgs.header == "" && safeArgs.description == "") {
-                isEdit = false
-            } else {
-                isEdit = true
-            }
+            isEdit = safeArgs.id != ""
             noteId = safeArgs.id
             noteHeader = safeArgs.header
             noteDescription = safeArgs.description
@@ -70,17 +62,17 @@ class NoteAddFragment : Fragment() {
 
     }
 
-    fun handleSaveNote() {
+    private fun handleSaveNote() {
         try {
             val db = requireActivity().applicationContext.openOrCreateDatabase("notes", Context.MODE_PRIVATE, null)
             db.execSQL("CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY, header TEXT, description TEXT)")
-            val header = editTextNoteHeader?.text.toString()
-            val description = editTextNoteDescription?.text.toString()
+            val header = editTextNoteHeader.text.toString()
+            val description = editTextNoteDescription.text.toString()
             if (header.isEmpty() && description.isEmpty()) {
                 return
             } else {
                 if (isEdit) {
-                    var id: Int = noteId.toInt()
+                    val id: Int = noteId.toInt()
                     db.execSQL("UPDATE notes SET header = '$header', description = '$description' WHERE id = $id")
                 } else {
                     db.execSQL("INSERT INTO notes (header, description) VALUES ('$header', '$description')")

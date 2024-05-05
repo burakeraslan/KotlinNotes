@@ -1,16 +1,17 @@
 package com.example.kotlinnotes
 
+import android.app.AlertDialog
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.Navigation
-import androidx.navigation.navArgument
 import androidx.recyclerview.widget.RecyclerView
 
-class NoteListRecyclerAdapter(val noteList: ArrayList<HashMap<String, String>>): RecyclerView.Adapter<NoteListRecyclerAdapter.NoteListViewHolder>() {
+class NoteListRecyclerAdapter(private val noteList: ArrayList<HashMap<String, String>>): RecyclerView.Adapter<NoteListRecyclerAdapter.NoteListViewHolder>() {
     class NoteListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteListViewHolder {
@@ -41,7 +42,25 @@ class NoteListRecyclerAdapter(val noteList: ArrayList<HashMap<String, String>>):
         }
 
         linearLayoutRecyclerRow.setOnLongClickListener{
-            println("Long clicked on ${noteList[position]["header"]}")
+            val alertDialog = AlertDialog.Builder(holder.itemView.context)
+            alertDialog.setTitle("Delete Note")
+            alertDialog.setMessage("Are you sure you want to delete this note?")
+            alertDialog.setPositiveButton("Delete") { _, _ ->
+                val db = holder.itemView.context.applicationContext.openOrCreateDatabase("notes", android.content.Context.MODE_PRIVATE, null)
+                db.execSQL("CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY, header TEXT, description TEXT)")
+                db.execSQL("DELETE FROM notes WHERE id = ${noteList[position]["id"]}")
+                Toast.makeText(holder.itemView.context, "Note deleted", Toast.LENGTH_SHORT).show()
+                noteList.removeAt(position)
+                notifyDataSetChanged()
+            }
+            alertDialog.setNegativeButton("No") { _, _ -> }
+            val dialog = alertDialog.create()
+            dialog.setOnShowListener {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(Color.RED)
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(Color.BLACK)
+            }
+            dialog.show()
+
             return@setOnLongClickListener true
         }
     }
